@@ -7,12 +7,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
-#include "Objects.h"
 
 SDL_Renderer * render;
 SDL_Window * window;
-
-
-
 
 #endif

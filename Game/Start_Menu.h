@@ -12,9 +12,14 @@ typedef enum {
 } Game_State;
 
 int start_menu();
+void render_bg(
+	SDL_Renderer * render,
+	Uint8         r,
+	Uint8         g,
+	Uint8         b,
+	Uint8         a);
 bool init();
 bool game_loop(Game_State * state);
-void clear();
 void close();
 
 #endif
