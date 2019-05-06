@@ -1,10 +1,10 @@
 #include "Objects.h"
 
 /*
+ * This will draw the object onto the canvas
  * @param shape {SDL_Rect}
  * @param render {SDL_Renderer}
  * @param r,g,b,a {Uint8} These are the values for the color of the shape
- * This will draw the object onto the canvas
  */
 void render_shape(
 	SDL_Rect * shape, 
@@ -22,10 +22,12 @@ void render_shape(
 
 
 /*
-This will set the size of the objects to check for boundaries 
+* This will set/initialize the size of the objects to check for boundaries and collision later on
+* @param object {Object *}
+* @param shape {SDL_Rect *}
+* @return true {bool} 
 */
 bool set_object(Object * object, SDL_Rect * shape) {
-	//puts("Do you make it here");
 	object->shape = shape;
 	object->top_left_x = shape->x;
 	object->top_left_y = shape->y;
@@ -45,8 +47,9 @@ bool set_object(Object * object, SDL_Rect * shape) {
 /*
  * This will move the object and update the values of coordinates of the object
  * @param shape {SDL_Rect}
- * @param x {int}
- * @param y {int}
+ * @param x {int} The amount of pixels to move horizontally
+ * @param y {int} The amount of pixels to move vertically
+ * @return true {bool}
 */
 bool move_shape(SDL_Rect * shape, Object * object, int x, int y) {
 	shape->x += x;
@@ -60,7 +63,9 @@ bool move_shape(SDL_Rect * shape, Object * object, int x, int y) {
 
 
 /*
- Updating an object's coordinates of the four corners
+ * Updating an object's coordinates of the four corners
+ * @param object {Object *} Will update the specific object's values for collision and boundary checking
+ * @return true {bool}
  */
 bool update_object(Object * object) {
 	object->top_left_x = (object->shape)->x;

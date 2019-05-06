@@ -1,6 +1,5 @@
 #include "Start_Menu.h" //This will include the Dependencies.h file, Objects.h, and sl.h header files
 
-
 const int WINDOW_WIDTH_GAME = 600; //This will be the fixed size of the window's width
 const int WINDOW_HEIGHT_GAME = 480; //This will be the fixed size of the window's height
 
@@ -20,6 +19,7 @@ int start_menu() {
 		Game_State state; // The game state is initialized (will need to implement start menu later)
 		state = CONTINUE;
 		game_loop(&state); // This will run the function game loop to take in user input
+		close(); // Clean up 
 		return 0;
 	}
 }
@@ -28,7 +28,7 @@ int start_menu() {
 /*
 * This will start the game loop and begin interactivity between the player 
 * @param finished {int *} 
-* @return {bool}
+* @return true {bool}
 */
 bool game_loop(Game_State * state) {
 	SDL_Rect user = { 0,WINDOW_HEIGHT_GAME-OBJECT_HEIGHT,OBJECT_WIDTH,OBJECT_HEIGHT}; // This initializes the user's character 
@@ -36,7 +36,6 @@ bool game_loop(Game_State * state) {
 	SDL_Event event;
 	set_object(user_object, &user); // Initializing the values in Objects.c
 	bool quit = false; // This will quit the program if the user exits
-	//bool goRight = true;
 
 	puts("Starting the render loop...");
 	while (!quit) { //While application is runnin
@@ -68,7 +67,7 @@ bool game_loop(Game_State * state) {
 
 /* 
  * This will initiate the game and start the window and renderer
- * @return void
+ * @return true {bool}
  */
 bool init() {
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
@@ -98,6 +97,9 @@ bool init() {
 /*
  * This will render the background with black, or what ever value is assigned to
  * the rgba.
+ * @param render {SDL_Renderer} The initialized renderer to draw on the canvas
+ * @param r,g,b,a {Uint8} The color values 
+ * @return {void}
  */
 void render_bg(
 	SDL_Renderer * render,
@@ -115,6 +117,7 @@ void render_bg(
 
 /*
  * This will clean up processes before quitting
+ * @return {void}
  */
 void close() {
 	SDL_DestroyRenderer(render);

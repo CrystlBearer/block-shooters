@@ -3,8 +3,6 @@
 #define OBECTS_H_INCLUDED
 #include "Dependencies.h"
 
-
-
 /*
  * This default coordinates for SDL is the top left corner of the object
  * The other values are for checking collision and boundaries later on
@@ -22,9 +20,7 @@ typedef struct object {
 } Object;
 
 
-//typedef struct object * Object_ptr;
-
-void render_shape(
+void render_shape( // Prototype to render the shape onto the canvas
 	SDL_Rect * shape, 
 	SDL_Renderer * render, 
 	Uint8         r,
@@ -32,20 +28,14 @@ void render_shape(
 	Uint8         b,
 	Uint8         a
 );
-
-bool move_shape(
+bool move_shape( // Prototype to move selected shape
 	SDL_Rect * shape,
 	Object * object,
 	int x, 
 	int y
 );
-
-bool set_object(
-	Object * object,
-	SDL_Rect * shape
-);
-
-bool update_object(Object * object);
+bool set_object( Object * object,SDL_Rect * shape); //Prototype to initialize the Object structure
+bool update_object(Object * object); // Prototype to udpate the Object structure
 
 
 
