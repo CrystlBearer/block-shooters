@@ -150,12 +150,12 @@
     <ClInclude Include="Dependencies.h" />
     <ClInclude Include="include\sl.h" />
     <ClInclude Include="Objects.h" />
-    <ClInclude Include="Start_Menu.h" />
+    <ClInclude Include="GameMain.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.c" />
     <ClCompile Include="Objects.c" />
-    <ClCompile Include="start_menu.c" />
+    <ClCompile Include="GameMain.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
