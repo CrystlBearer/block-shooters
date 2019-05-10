@@ -1,4 +1,4 @@
-#include "Start_Menu.h"
+#include "GameMain.h"
 
 
 int main(int argc, char *argv[]) {

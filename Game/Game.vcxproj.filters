@@ -21,10 +21,10 @@
     <ClInclude Include="Dependencies.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Start_Menu.h">
+    <ClInclude Include="Objects.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Objects.h">
+    <ClInclude Include="GameMain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -32,10 +32,10 @@
     <ClCompile Include="main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="start_menu.c">
+    <ClCompile Include="Objects.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Objects.c">
+    <ClCompile Include="GameMain.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

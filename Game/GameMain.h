@@ -4,8 +4,8 @@
 #include "Objects.h"
 
 typedef enum { // This will be used to create a menu and determine if the player would like to continue, pause, or stop the game.
-	CONTINUE,
-	PAUSE,
+	PLAY,
+	MENU,
 	STOP
 } Game_State; 
 
@@ -17,7 +17,8 @@ void render_bg( // Prototype for clearing the background by rendering the backgr
 	Uint8         b,
 	Uint8         a);
 bool init(); // This is used to create the game window and renderer
-bool game_loop(Game_State * state); // This is the game loop to continuously render
+Game_State game_loop(); // This is the game loop to continuously render
+Game_State show_menu();
 void close(); // This will clean up all the windows and renderers before exiting the program
 
 #endif

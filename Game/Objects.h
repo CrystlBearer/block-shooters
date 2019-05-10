@@ -17,6 +17,13 @@ typedef struct object {
 	int bottom_left_y;
 	int bottom_right_x;
 	int bottom_right_y;
+	struct object * bullets;
+	bool isBullet;
+	bool isIntersecting;
+	bool isEnemy;
+	bool isWall;
+	bool canMoveLeft;
+	bool canMoveRight;
 } Object;
 
 
@@ -34,7 +41,7 @@ bool move_shape( // Prototype to move selected shape
 	int x, 
 	int y
 );
-bool set_object( Object * object,SDL_Rect * shape); //Prototype to initialize the Object structure
+bool set_object( Object * object, SDL_Rect * shape); //Prototype to initialize the Object structure
 bool update_object(Object * object); // Prototype to udpate the Object structure
 
 
