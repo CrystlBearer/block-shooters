@@ -4,7 +4,8 @@ const int WINDOW_WIDTH_GAME = 600; // This will be the fixed size of the window'
 const int WINDOW_HEIGHT_GAME = 480; // This will be the fixed size of the window's height
 const short OBJECT_WIDTH = 60; // This is the width of all enemies and users in game
 const short OBJECT_HEIGHT = 40; // This is the height of all enemies and users in the game
-const short BULLET_WIDTH, BULLET_HEIGHT = 20; // Width height for projectiles
+const short BULLET_WIDTH = 20;
+const short BULLET_HEIGHT = 20; // Width height for projectiles
 
 int score = 0;
 short users_bullet_counter = 0;
@@ -83,34 +84,25 @@ Game_State game_loop() {
 	Game_State state = MENU;
 	Uint32 start = 0;
 	SDL_Rect left_wall = { 0,0,1,WINDOW_HEIGHT_GAME };
-	SDL_Rect right_wall = { WINDOW_WIDTH_GAME-1,0,1,WINDOW_HEIGHT_GAME };
+	SDL_Rect right_wall = { WINDOW_WIDTH_GAME - 1,0,1,WINDOW_HEIGHT_GAME };
 	SDL_Rect upper_wall = { 0,1,WINDOW_WIDTH_GAME,1 };
-	SDL_Rect lower_wall = { 0,WINDOW_HEIGHT_GAME-1,WINDOW_WIDTH_GAME,1};
-	SDL_Rect user = { 0,WINDOW_HEIGHT_GAME-OBJECT_HEIGHT-20,OBJECT_WIDTH,OBJECT_HEIGHT}; // This initializes the user's character 
-	Object * user_object = malloc(sizeof(Object)*1); // This is used to update the user's character position of all four corners (Found in Objects.h and Objects.c)
+	SDL_Rect lower_wall = { 0,WINDOW_HEIGHT_GAME - 1,WINDOW_WIDTH_GAME,1 };
+	SDL_Rect user = { 0,WINDOW_HEIGHT_GAME - OBJECT_HEIGHT - 20,OBJECT_WIDTH,OBJECT_HEIGHT }; // This initializes the user's character 
+	Object * user_object = malloc(sizeof(Object) * 1); // This is used to update the user's character position of all four corners (Found in Objects.h and Objects.c)
 	SDL_Rect enemy = { 0,20,OBJECT_WIDTH,OBJECT_HEIGHT }; // This initializes the user's character 
-	Object * enemy_object = malloc(sizeof(Object)*1);
+	Object * enemy_object = malloc(sizeof(Object) * 1);
 	set_object(user_object, &user); // Initializing the values in Objects.c
 	set_object(enemy_object, &enemy);
 
+	SDL_Rect user_bullet = { (user.x + OBJECT_WIDTH) / 3, user.y, BULLET_WIDTH, BULLET_HEIGHT};
+	Object * user_bullet_object = malloc(sizeof(Object) * 1);
+	set_object(user_bullet_object, &user_bullet);
+	SDL_Rect enemy_bullet = { (enemy.x + OBJECT_WIDTH) / 3, enemy.y+(OBJECT_HEIGHT/2), BULLET_WIDTH, BULLET_HEIGHT };
+	Object * enemy_bullet_object = malloc(sizeof(Object) * 1);
+	set_object(enemy_bullet_object, &enemy_bullet);
 
-
-
-	  //SDL_Rect bullets[3];
-	//Object * user_bullets_object = malloc(sizeof(Object) * 3);
-	
-
-	//for (short i = 0; i < 3; i++) { // Initializing the user's projectiles in Objects.c
-	//	bullets[i].x = (user.x + OBJECT_WIDTH)/2;
-	//	bullets[i].y = user.y;
-	//	bullets[i].w = BULLET_WIDTH;
-	//	bullets[i].h = BULLET_HEIGHT;
-	//}
-
-	//set_object(&user_bullets_object[0], &bullets[0]);
-	//set_object(&user_bullets_object[1], &bullets[1]);
-	//set_object(&user_bullets_object[2], &bullets[2]);
-
+	bool userCanShoot = true;
+	bool enemyCanShoot = true;
 
 	bool quit = false; // This will quit the program if the user exits
 	puts("Starting the render loop...");
@@ -125,23 +117,30 @@ Game_State game_loop() {
 				switch (event.key.keysym.sym) {
 					case SDLK_a:
 						move_shape(&user, user_object, -(OBJECT_WIDTH), 0);
+						move_shape(&user_bullet, user_bullet_object, -(OBJECT_WIDTH), 0);
 						break;
 					case SDLK_d:
 						move_shape(&user, user_object, (OBJECT_WIDTH), 0);
+						move_shape(&user_bullet, user_bullet_object, OBJECT_WIDTH, 0);
 						break;
 					case SDLK_s:
 						puts("PRESSED S!");
 						//move_shape(&bullets[users_bullet_counter], &user_bullets_object[users_bullet_counter], 0,-(BULLET_HEIGHT));
+						move_shape(&user_bullet, user_bullet_object, 0, -(BULLET_HEIGHT));
+						userCanShoot = false;
 						break;
 					case SDLK_j:
 						move_shape(&enemy, enemy_object, -(OBJECT_WIDTH), 0);
+						move_shape(&enemy_bullet, user_bullet_object, -(OBJECT_WIDTH), 0);
 						break;
 					case SDLK_k:
 						puts("PRESSED K!");
+						move_shape(&enemy_bullet, user_bullet_object, 0, (BULLET_HEIGHT));
+						enemyCanShoot = false;
 						break;
 					case SDLK_l:
 						move_shape(&enemy, enemy_object, (OBJECT_WIDTH), 0);
-						//move_shape(&bullets[users_bullet_counter], &user_bullets_object[users_bullet_counter], 0,-(BULLET_HEIGHT));
+						move_shape(&enemy_bullet, user_bullet_object, OBJECT_WIDTH, 0);
 						break;
 					case SDLK_q:
 						puts("Returning to main menu...");
@@ -153,6 +152,8 @@ Game_State game_loop() {
 			}
 		}
 		render_bg(render, 0x00, 0x00, 0x00, 0x00); //this will clear the window of all objects
+		render_shape(&user_bullet, render, 255, 251, 0, 0);
+		render_shape(&enemy_bullet, render, 85, 255, 0, 0);
 		render_shape(&user,render, 0, 0, 255, 0); //this will draw the shape, but will not render
 		render_shape(&enemy, render, 192, 16, 16, 255);
 		render_shape(&left_wall, render, 192, 16, 16, 255);
@@ -174,7 +175,8 @@ Game_State game_loop() {
 
 	free(user_object);
 	free(enemy_object);
-	printf("Ticks: %d\n", start);
+	free(user_bullet_object);
+	//printf("Ticks: %d\n", start);
 	return state;
 }
 
