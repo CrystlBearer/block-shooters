@@ -1,7 +1,11 @@
 #include "GameMain.h"
-#define MAX_PATH_LENGTH 80
 
-
+/*
+ * This sorts the slowest times in milliseconds first 
+ * @param scores {int*} Pointer to array of times
+ * @param counter {int*} Pointer to size of the array scores
+ * @return {int}
+*/
 int bubblesort(int * scores, int *counter) {
 	for (int c = 0; c < *counter - 1; c++) {
 		for (int i = 0; i < *counter-1; i++) {
@@ -24,13 +28,13 @@ int main(int argc, char *argv[]) {
 	int result = 0;
 	int scores[50] = { 0 };
 	int counter = 0;
-	if (response == 'Y') {
-		result = start_menu(scores,&counter);
+	if (response == 'Y' || response == 'y') {
+		result = start_menu(scores,&counter); // This will start the game
 		if (result == 0) {
-			bubblesort(scores,&counter);
+			bubblesort(scores,&counter); // This will sort the scores
 			FILE *cfPtr;
 			errno_t err;
-			if ((err = fopen_s(&cfPtr,"game_log.txt", "w+")) != 0) {
+			if ((err = fopen_s(&cfPtr,"game_log.txt", "w+")) != 0) { // Open the file to write to game_log.txt
 				puts("FILE could not be opened!");
 			}
 			else {

@@ -27,7 +27,7 @@ int start_menu(int * scores, int * score_counter) {
 		return -1;
 	}
 	else {
-		Game_State state; // The game state is initialized (will need to implement start menu later)
+		Game_State state; // The game state is initialized
 		state = MENU;
 		do {
 			switch (state) {
@@ -330,7 +330,7 @@ Game_State game_loop() {
 		total_milliseconds = end - start;
 		//Rendering the score board...
 		render_score(total_milliseconds);
-		Sleep(2500); // To let the users see the score
+		Sleep(2500); // To let the users see the score for 2.5 seconds
 	}
 	else {
 		total_milliseconds = 0;
