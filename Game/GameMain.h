@@ -15,7 +15,9 @@ void render_bg( // Prototype for clearing the background by rendering the backgr
 	Uint8         r,
 	Uint8         g,
 	Uint8         b,
-	Uint8         a);
+	Uint8         a
+);
+
 bool init(); // This is used to create the game window and renderer
 Game_State game_loop(); // This is the game loop to continuously render
 Game_State show_menu();
