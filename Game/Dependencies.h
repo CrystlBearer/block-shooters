@@ -10,11 +10,12 @@ Although, I put pragma once and ifndef, I would prefer to not add duplication of
 #include <SDL_error.h>
 #include <SDL_events.h>
 #include <stdlib.h>
-#include <stdio.h>
 #include <stdbool.h>
 #include <time.h>
 #include <SDL_ttf.h>
 #include <SDL_image.h>
+#include <Windows.h>
+#include <stdio.h>
 
 SDL_Renderer * render; // Global variable so any function/file can call upon the renderer
 SDL_Window * window; // Global variable so any function/file can call upon the window

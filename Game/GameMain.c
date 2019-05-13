@@ -11,7 +11,6 @@ int score = 0;
 short users_bullet_counter = 0;
 
 
-SDL_Color textColor = { 255,255,255 };
 SDL_Event event; // This is used to detect user's actions
 Uint32 total_milliseconds;
 
@@ -50,7 +49,7 @@ int start_menu() {
 
 
 /*
-* This will display the main menu
+* This will display the main menu with the texts
 * @return select {Game_State} This will have game state enum to determine to continue the game or exit
 */
 Game_State show_menu() {
@@ -91,16 +90,16 @@ Game_State show_menu() {
 	
 
 	const SDL_Rect title_src = { 0, 0, 20*WINDOW_WIDTH_GAME,WINDOW_HEIGHT_GAME }; // Pure guess work of what the values are here but bigger the less skewed it'll look if the dest is smaller
-	const SDL_Rect title_dest = { 50, 30, (4*WINDOW_WIDTH_GAME)/5,WINDOW_HEIGHT_GAME / 4 }; //This will stretch to fill the rectangle
+	const SDL_Rect title_dest = { 50, 30, (4*WINDOW_WIDTH_GAME)/5,WINDOW_HEIGHT_GAME >> 2 }; //This will stretch to fill the rectangle
 	
 	const SDL_Rect option1_src = { 0, 0, 20 * WINDOW_WIDTH_GAME,WINDOW_HEIGHT_GAME };
-	const SDL_Rect option1_dest = { (1*WINDOW_WIDTH_GAME)/5, 200, WINDOW_WIDTH_GAME/2,WINDOW_HEIGHT_GAME / 8 };
+	const SDL_Rect option1_dest = { (1*WINDOW_WIDTH_GAME)/5, 200, WINDOW_WIDTH_GAME >> 1,WINDOW_HEIGHT_GAME >> 3 };
 	
 	const SDL_Rect option2_src = { 0, 0, 20 * WINDOW_WIDTH_GAME,WINDOW_HEIGHT_GAME };
-	const SDL_Rect option2_dest = { (1*WINDOW_WIDTH_GAME)/5, 250, WINDOW_WIDTH_GAME/2,WINDOW_HEIGHT_GAME / 8 };
+	const SDL_Rect option2_dest = { (1*WINDOW_WIDTH_GAME)/5, 250, WINDOW_WIDTH_GAME >> 1,WINDOW_HEIGHT_GAME >> 3 };
 
 	const SDL_Rect credits_src = { 0, 0, 20 * WINDOW_WIDTH_GAME,WINDOW_HEIGHT_GAME };
-	const SDL_Rect credits_dest = { (1 * WINDOW_WIDTH_GAME) / 5, WINDOW_HEIGHT_GAME-(WINDOW_HEIGHT_GAME/20), WINDOW_WIDTH_GAME / 2,WINDOW_HEIGHT_GAME / 20 };
+	const SDL_Rect credits_dest = { (1 * WINDOW_WIDTH_GAME) / 5, WINDOW_HEIGHT_GAME-(WINDOW_HEIGHT_GAME/20), WINDOW_WIDTH_GAME >> 1,WINDOW_HEIGHT_GAME / 20 };
 
 	SDL_FreeSurface(text_title); //Frees the surface from the original text
 	SDL_FreeSurface(text_option1);
@@ -114,7 +113,7 @@ Game_State show_menu() {
 
 	Game_State select = MENU;
 	bool quit = false;
-	render_bg(render, 0, 20, 30, 0);
+	render_bg(render, 0, 14, 20, 10);
 	SDL_RenderCopy(render, texture_text_title, &title_src, &title_dest);
 	SDL_RenderCopy(render, texture_text_option1, &option1_src, &option1_dest);
 	SDL_RenderCopy(render, texture_text_option2, &option2_src, &option2_dest);
@@ -213,16 +212,26 @@ bool initialize_objects() {
 * @return true {bool}
 */
 Game_State game_loop() {
+	void render_score(Uint32);
+	void render_objects(SDL_Rect *[]);
+	SDL_Rect * objects[8];
 	Uint32 start;
 	Uint32 end;
 	Game_State state = MENU;
 	initialize_objects();
-
+	objects[0] = &user_bullet;
+	objects[1] = &enemy_bullet;
+	objects[2] = &user;
+	objects[3] = &enemy;
+	objects[4] = &left_wall;
+	objects[5] = &right_wall;
+	objects[6] = &upper_wall;
+	objects[7] = &lower_wall;
 
 	bool userCanShoot = true;
 	bool enemyCanShoot = true;
-
 	bool quit = false; // This will quit the program if the user exits
+	
 	puts("Starting the render loop...");
 	start = SDL_GetTicks();
 	while (!quit) { //While application is runnin
@@ -276,10 +285,10 @@ Game_State game_loop() {
 		if (userCanShoot == false) {
 			move_shape(&user_bullet, user_bullet_object, 0, -(BULLET_HEIGHT));
 		}
+		
 		if (enemyCanShoot == false) {
 			move_shape(&enemy_bullet, enemy_bullet_object, 0, (BULLET_HEIGHT));
 		}
-
 
 		if (SDL_HasIntersection(&lower_wall, &enemy_bullet)) {
 			enemy_bullet.x = enemy.x + (OBJECT_WIDTH / 3);
@@ -293,30 +302,27 @@ Game_State game_loop() {
 		}
 
 		if (SDL_HasIntersection(&enemy, &user_bullet)) {
-			puts("User bullet hit the enemy!");
 			end = SDL_GetTicks();
+			puts("User bullet hit the enemy!");
 			break;
 		}
 
 		if (SDL_HasIntersection(&user, &enemy_bullet)) {
-			puts("Enemy bullet hit the user!");
 			end = SDL_GetTicks();
+			puts("Enemy bullet hit the user!");
 			break;
 		}
 
 		render_bg(render, 0x00, 0x00, 0x00, 0x00); //this will clear the window of all objects
-		render_shape(&user_bullet, render, 255, 251, 0, 0);
-		render_shape(&enemy_bullet, render, 85, 255, 0, 0);
-		render_shape(&user,render, 0, 0, 255, 0); //this will draw the shape, but will not render
-		render_shape(&enemy, render, 192, 16, 16, 255);
-		render_shape(&left_wall, render, 192, 16, 16, 255);
-		render_shape(&right_wall, render, 192, 16, 16, 255);
-		render_shape(&upper_wall, render, 192, 16, 16, 255);
-		render_shape(&lower_wall, render, 192, 16, 16, 255);
+		render_objects(objects);
 		SDL_RenderPresent(render); //This will render all the shapes into the canvas
 	}
 
+
+	//Rendering the score board...
 	total_milliseconds = end - start;
+	render_score(total_milliseconds);
+	Sleep(2500); // To let the users see the score
 	free(user_object);
 	free(enemy_object);
 	free(user_bullet_object);
@@ -324,6 +330,46 @@ Game_State game_loop() {
 	return state;
 }
 
+
+/*
+ * Render objects
+ * @param total_milliseconds {Uint32} Time it took to end the game in milliseconds
+ */
+void render_objects(SDL_Rect * objects[]) {
+	render_shape(objects[0], render, 255, 251, 0, 0);
+	render_shape(objects[1], render, 85, 255, 0, 0);
+	render_shape(objects[2], render, 0, 0, 255, 0); //this will draw the shape, but will not render
+	render_shape(objects[3], render, 192, 16, 16, 255);
+	render_shape(objects[4], render, 192, 16, 16, 255);
+	render_shape(objects[5], render, 192, 16, 16, 255);
+	render_shape(objects[6], render, 192, 16, 16, 255);
+	render_shape(objects[7], render, 192, 16, 16, 255);
+}
+
+
+
+/*
+ * Render scores after player hits the other player
+ * @param total_milliseconds {Uint32} Time it took to end the game in milliseconds
+ */
+void render_score(Uint32 total_milliseconds) {
+	char buffer[50];
+	sprintf_s(buffer, 50, "%d", total_milliseconds);
+	SDL_Color textColor = { 255,255,255 };
+	SDL_Surface * text = TTF_RenderText_Solid(font, buffer, textColor);
+	SDL_Texture * texture_text = SDL_CreateTextureFromSurface(render, text);
+
+	if (texture_text == NULL) {
+		printf_s("FILE: %s >> LINE: %d >> Title texture creation error!\n", __FILE__, __LINE__);
+		exit(EXIT_FAILURE);
+	}
+	const SDL_Rect score_src = { 0, 0, 20 * WINDOW_WIDTH_GAME,WINDOW_HEIGHT_GAME }; // Pure guess work of what the values are here but bigger the less skewed it'll look if the dest is smaller
+	const SDL_Rect score_dest = { 50, 150, (4 * WINDOW_WIDTH_GAME) / 5,WINDOW_HEIGHT_GAME >> 2 }; //This will stretch to fill the rectangle
+	SDL_FreeSurface(text);
+	SDL_SetRenderTarget(render, texture_text); // this allows this texture to be rendered
+	SDL_RenderCopy(render, texture_text, &score_src, &score_dest);
+	SDL_RenderPresent(render);
+}
 
 
 
