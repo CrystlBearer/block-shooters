@@ -8,8 +8,8 @@ Download SDL2's TTF development library here: [SDL2 TTF](https://www.libsdl.org/
 Download SDL2's image development library here: [SDL2 Image](https://www.libsdl.org/projects/SDL_image/)
 
 ## Setup
-Download the all files from this repository. Open up Visual Studio 2017 and click on `File > Open > Project/Solution` and select the `Game.sln` file from the repository files. Visual Studio should set up the project structure for you.
+Download the all files from this repository. Open up Visual Studio 2017 and click on `File > Open > Project/Solution` and select the `Game.sln` file from the repository files. Visual Studio should set up the project structure for you (if the vcxproj.filters files are inside).
 
 ## Resources
 Refer to this site for tutorial: [Lazy Foo](http://lazyfoo.net/tutorials/SDL/index.php)     
-Here is the documentation for SDL2 : [SDL2 Wiki](https://wiki.libsdl.org/FrontPage)
+Here is the documentation for SDL2 Library: [SDL2 Wiki](https://wiki.libsdl.org/FrontPage)
