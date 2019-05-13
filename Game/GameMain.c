@@ -14,11 +14,14 @@ short users_bullet_counter = 0;
 SDL_Event event; // This is used to detect user's actions
 Uint32 total_milliseconds;
 
+
+
+
 /*
 * This will bring up the start menu and call the game loop
 * @return {int}
 */
-int start_menu() {
+int start_menu(int * scores, int * score_counter) {
 	bool initialize = init(); // This will create the window and renderer
 	if (initialize == false) {  // If creation fails, program will exit with code -1
 		return -1;
@@ -29,7 +32,11 @@ int start_menu() {
 		do {
 			switch (state) {
 				case PLAY:
+						printf_s("counter: %d\n",*score_counter);
 					state = game_loop();
+					if (total_milliseconds != 0) {
+						scores[(*score_counter)++] = total_milliseconds;
+					}
 					break;
 				case MENU:
 					state = show_menu();
@@ -40,6 +47,7 @@ int start_menu() {
 			}
 		} while (state != STOP);
 		close(); // Clean up 
+		//return total_milliseconds;
 		return 0;
 	}
 }
@@ -215,8 +223,8 @@ Game_State game_loop() {
 	void render_score(Uint32);
 	void render_objects(SDL_Rect *[]);
 	SDL_Rect * objects[8];
-	Uint32 start;
-	Uint32 end;
+	Uint32 start = 0;
+	Uint32 end = 0;
 	Game_State state = MENU;
 	initialize_objects();
 	objects[0] = &user_bullet;
@@ -318,11 +326,15 @@ Game_State game_loop() {
 		SDL_RenderPresent(render); //This will render all the shapes into the canvas
 	}
 
-
-	//Rendering the score board...
-	total_milliseconds = end - start;
-	render_score(total_milliseconds);
-	Sleep(2500); // To let the users see the score
+	if (end != 0) {
+		total_milliseconds = end - start;
+		//Rendering the score board...
+		render_score(total_milliseconds);
+		Sleep(2500); // To let the users see the score
+	}
+	else {
+		total_milliseconds = 0;
+	}
 	free(user_object);
 	free(enemy_object);
 	free(user_bullet_object);
@@ -383,13 +395,13 @@ void render_score(Uint32 total_milliseconds) {
 bool init() {
 
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
-		printf("File: %s << Line: %d SDL_Init Error: %s\n", __FILE__, __LINE__, SDL_GetError());
+		printf_s("File: %s << Line: %d SDL_Init Error: %s\n", __FILE__, __LINE__, SDL_GetError());
 		exit(EXIT_FAILURE);
 	}
 
 
 	if (TTF_Init() < 0) {
-		printf("File: %s << Line: %d TTF_Init Error: %s\n", __FILE__, __LINE__, TTF_GetError());
+		printf_s("File: %s << Line: %d TTF_Init Error: %s\n", __FILE__, __LINE__, TTF_GetError());
 		exit(EXIT_FAILURE);
 	}
 
@@ -406,12 +418,12 @@ bool init() {
 	
 	window = SDL_CreateWindow("Block Shooters", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH_GAME, WINDOW_HEIGHT_GAME, SDL_WINDOW_SHOWN);
 	if (window == NULL) {
-		printf("File: %s << Line: %d SDL_CreateWindow Error: %s\n", __FILE__, __LINE__, SDL_GetError());
+		printf_s("File: %s << Line: %d SDL_CreateWindow Error: %s\n", __FILE__, __LINE__, SDL_GetError());
 		exit(EXIT_FAILURE);
 	}
 	render = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	if (render == NULL) {
-		printf("File: %s << Line: %d SDL_CreateRenderer Error: %s\n", __FILE__, __LINE__, SDL_GetError());
+		printf_s("File: %s << Line: %d SDL_CreateRenderer Error: %s\n", __FILE__, __LINE__, SDL_GetError());
 		exit(EXIT_FAILURE);
 	}
 	

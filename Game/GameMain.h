@@ -9,7 +9,7 @@ typedef enum { // This will be used to create a menu and determine if the player
 	STOP
 } Game_State; 
 
-int start_menu(); //Prototype for the start menu
+int start_menu(int*,int*); //Prototype for the start menu
 void render_bg( // Prototype for clearing the background by rendering the background color
 	SDL_Renderer * render,
 	Uint8         r,
