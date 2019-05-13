@@ -68,22 +68,22 @@ Game_State show_menu() {
 	SDL_Texture * texture_text_credits = SDL_CreateTextureFromSurface(render, credits);
 
 	if (texture_text_title == NULL) {
-		printf_s("FILE: %s >> LINE: %s >> Title texture creation error!\n", __FILE__,__LINE__ );
+		printf_s("FILE: %s >> LINE: %d >> Title texture creation error!\n", __FILE__,__LINE__ );
 		exit(EXIT_FAILURE);
 	}
 
 	if (texture_text_option1 == NULL) {
-		printf_s("FILE: %s >> LINE: %s >> Text option (1) creation error!\n", __FILE__, __LINE__ );
+		printf_s("FILE: %s >> LINE: %d >> Text option (1) creation error!\n", __FILE__, __LINE__ );
 		exit(EXIT_FAILURE);
 	}
 
 	if (texture_text_option2 == NULL) {
-		printf_s("FILE: %s >> LINE: %s >> Text option (2) creation error!\n", __FILE__, __LINE__ );
+		printf_s("FILE: %s >> LINE: %d >> Text option (2) creation error!\n", __FILE__, __LINE__ );
 		exit(EXIT_FAILURE);
 	}
 
 	if (texture_text_credits == NULL) {
-		printf_s("FILE: %s >> LINE: %s >> Text option (2) creation error!\n", __FILE__, __LINE__);
+		printf_s("FILE: %s >> LINE: %d >> Text option (2) creation error!\n", __FILE__, __LINE__);
 		exit(EXIT_FAILURE);
 	}
 
