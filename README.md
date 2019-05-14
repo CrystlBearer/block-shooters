@@ -1,6 +1,11 @@
 # block-shooters
 This is a simple shooter with blocks.
-     
+
+![Menu](https://github.com/SairenDelight/my-repository-images/blob/master/block-shooter/Block_Shooters_Menu.png)
+
+
+![Game](https://github.com/SairenDelight/my-repository-images/blob/master/block-shooter/Block_Shooters_Game.png)
+
 
 
 ***
